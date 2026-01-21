@@ -3,6 +3,7 @@ import type { Metadata, Viewport } from "next"
 import { Geist, Geist_Mono } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
+import Script from "next/script";
 
 const _geist = Geist({ subsets: ["latin"] })
 const _geistMono = Geist_Mono({ subsets: ["latin"] })
@@ -39,15 +40,24 @@ export const viewport: Viewport = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body className={`font-sans antialiased`}>
+      <head>
+        {/* Google Analytics */}
+        <!-- Google tag (gtag.js) -->
+        <Script async src="https://www.googletagmanager.com/gtag/js?id=G-LV3Z5C03E3"></Script>
+        <Script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-LV3Z5C03E3');
+      </head>
+      <body className="font-sans antialiased">
         {children}
-        <Analytics />
+        <Analytics /> {/* keep Vercel Analytics if you want */}
       </body>
     </html>
-  )
+  );
 }
+
